@@ -1,0 +1,12 @@
+# byte compiled
+__pycache__/
+*.py[cod]
+
+# Jupyter 
+.ipynb_checkpoints
+
+# Python venv
+.venv
+
+# data 
+data_intermediate/
