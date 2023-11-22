@@ -11,6 +11,7 @@ pandas = "*"
 requests = "*"
 beautifulsoup4 = "*"
 streamlit = "*"
+plotly = "*"
 
 [dev-packages]
 

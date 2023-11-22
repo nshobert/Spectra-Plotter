@@ -10,3 +10,8 @@ __pycache__/
 
 # data 
 data_intermediate/
+
+# random files
+blog.md
+scratch.ipynb
+scratch_streamlit_app.py
