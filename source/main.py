@@ -5,10 +5,12 @@
 import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
+import scraper
+import functions
 
 # SIDEBAR: latitude and longitude inputs.
-st.sidebar.number_input('latitude (e.g. 47.56)')
-st.sidebar.number_input('longitude (e.g. -122.01)')
+lat = st.sidebar.text_input('latitude (e.g. 47.56)')
+lon = st.sidebar.text_input('longitude (e.g. -122.01)')
 
 # SIDEBAR: show small map box to confirm location.
 # set default location to seattle
@@ -26,6 +28,9 @@ site_classes = st.sidebar.multiselect(
     ['A','B','BC','C','CD', 'D', 'DE', 'E', 'Default']
     )
 
+# SIDEBAR: name the location of the project.
+title = st.sidebar.text_input('Project Location (e.g. Kirkland)')
+
 # SIDEBAR: option to create composite spectrum
 composite = st.sidebar.radio(
     'Select to plot maximum composite spectrum:',
@@ -34,6 +39,26 @@ composite = st.sidebar.radio(
 
 # SIDEBAR: submit button.
 st.sidebar.button("SUBMIT")
+
+# When submitted, call scraper to
+# Construct the URLs
+urls = []
+for site_class in site_classes:
+    url = functions.construct_url(
+        lat,
+        lon,
+        risk_category,
+        site_class,
+        title
+    )
+    urls.append[url]
+
+# When URLs are ready, scrape data
+
+# populate dataframes
+
+# When spectra dfs are made, plot the retrieved spectra
+
 
 # Title for app.
 st.header('ASCE 7-22 Response Spectra Plotter')
@@ -60,4 +85,4 @@ st.write('The dataframe contains the spectral ordinates of the plotted data')
 st.dataframe(my_df)
 
 # MAIN AREA: write out URLs and data source.
-st.write('The data was gathered from the USGS website using these URLs:')
+st.write('The data was gathered from the USGS website using these URLs:', urls)
