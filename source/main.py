@@ -13,24 +13,25 @@ st.header('ASCE 7-22 Response Spectra Plotter')
 st.write('an application to plot multiple response spectra')
 
 # User input location, confirm on map
-with st.form('location'):
-    with st.sidebar:
-        # SIDEBAR: latitude and longitude inputs.
-        lat = st.text_input('Enter latitude (e.g. 47.56)')
-        lon = st.text_input('Enter longitude (e.g. -122.01)')
-        
-        submitted1 = st.form_submit_button('Check Location')
+with st.sidebar:
+    # SIDEBAR: latitude and longitude inputs.
+    lat = st.text_input('Enter latitude (e.g. 47.56)')
+    lon = st.text_input('Enter longitude (e.g. -122.01)')
 
-        if submitted1:
-            # Put lat and lon into a data structure.
-            loc = pd.DataFrame(
-                [[lat, lon]],
-                columns=['lat', 'lon'])
-        
-            # when lat lon submitted, update map
-            st.map(
-                data=loc,
-                zoom=5)
+    # SIDEBAR: submit button for lat, lon
+    submitted1 = st.button('Check Location')
+
+    if submitted1 and lat and lon:
+        try:
+            lat_float = float(lat)
+            lon_float = float(lon)
+            loc = pd.DataFrame({
+                'lat': [lat_float],
+                'lon': [lon_float]
+                })
+            st.map(data=loc, zoom=9)
+        except ValueError:
+            st.error("Please enter valid latitude and longitude values.")
 '''
 # SIDEBAR: use a form to get user inputs
 with st.form('user_inputs'):
