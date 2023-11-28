@@ -19,9 +19,9 @@ with st.sidebar:
     lon = st.text_input('Enter longitude (e.g. -122.01)')
 
     # SIDEBAR: submit button for lat, lon
-    submitted1 = st.button('Check Location')
+    check_location = st.button('Check Location')
 
-    if submitted1 and lat and lon:
+    if check_location and lat and lon:
         try:
             lat_float = float(lat)
             lon_float = float(lon)
@@ -32,10 +32,10 @@ with st.sidebar:
             st.map(data=loc, zoom=9)
         except ValueError:
             st.error("Please enter valid latitude and longitude values.")
-'''
-# SIDEBAR: use a form to get user inputs
-with st.form('user_inputs'):
-    with st.sidebar:
+
+    # SIDEBAR: use a form to get user inputs
+    st.header('After confirming location, select spectrum options')
+    with st.form('user_inputs'):
         # SIDEBAR: input risk category, only 1.
         risk_category = st.radio(
             'Select risk category',
@@ -102,4 +102,4 @@ st.dataframe(my_df)
 
 # MAIN AREA: write out URLs and data source.
 st.write('The data was gathered from the USGS website using these URLs:', urls)
-'''
+
