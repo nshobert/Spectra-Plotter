@@ -117,7 +117,17 @@ if user_input:
                 line=dict(dash='dash')
             )
         )
+
+        # Set x axis to log and add labels.
+        fig.update_xaxes(
+                type='log',
+                title='Period (s)'
+            )
         
+        fig.update_yaxes(
+                title='Spectral Acceleration (g)'
+            )
+            
 # MAIN AREA: display spectra plot.
 st.plotly_chart(fig)
 
