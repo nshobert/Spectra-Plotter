@@ -100,6 +100,24 @@ if user_input:
             )
         )
 
+    # Add composite spectrum if selected
+    if composite == 'yes':
+        # Use the periods from first site class since all the same.
+        periods = all_data[0]['Periods'] if all_data else []
+
+        # Get max spectral acceleration at each period.
+        max_ords = [max(data['Ordinates'][i] for data in all_data) for i in range(len(periods))]
+        
+        # Add the composite spectrum.
+        fig.add_trace(
+            go.Scatter(
+                x=periods,
+                y=max_ords,
+                name='Composite Spectrum',
+                line=dict(dash='dash')
+            )
+        )
+        
 # MAIN AREA: display spectra plot.
 st.plotly_chart(fig)
 
