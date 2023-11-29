@@ -15,8 +15,8 @@ st.write('an application to plot multiple response spectra')
 # User input location, confirm on map
 with st.sidebar:
     # SIDEBAR: latitude and longitude inputs.
-    lat = st.text_input('Enter latitude (e.g. 47.56)')
-    lon = st.text_input('Enter longitude (e.g. -122.01)')
+    lat = st.text_input('Enter latitude', value=47.56)
+    lon = st.text_input('Enter longitude', value=-122.01)
 
     # SIDEBAR: submit button for lat, lon
     check_location = st.button('Check Location')
@@ -39,17 +39,19 @@ with st.sidebar:
         # SIDEBAR: input risk category, only 1.
         risk_category = st.radio(
             'Select risk category',
-            ['I', 'II', 'III', 'IV']
+            ['I', 'II', 'III', 'IV'],
+            index=2 #Default to III
             )
 
         # SIDEBAR: site class inputs, up to 9.
         site_classes = st.multiselect(
             'Select one or more site classes:',
-            ['A','B','BC','C','CD', 'D', 'DE', 'E', 'Default']
+            ['A','B','BC','C','CD', 'D', 'DE', 'E', 'Default'],
+            default=['C','CD','D']
             )
 
         # SIDEBAR: name the location of the project.
-        title = st.text_input('Project Location (e.g. Kirkland)')
+        title = st.text_input('Project Location', value="MyCity")
 
         # SIDEBAR: option to create composite spectrum
         composite = st.radio(
@@ -58,10 +60,10 @@ with st.sidebar:
             )
 
         # SIDEBAR: submit button.
-        submitted2 = st.form_submit_button("SUBMIT")
+        user_input = st.form_submit_button("SUBMIT")
 
 # Upon submit, get data and show plots and dataframes.
-if submitted2:
+if user_input:
     # Construct the URLs
     urls = []
     for site_class in site_classes:
@@ -72,34 +74,41 @@ if submitted2:
             site_class,
             title
         )
-        urls.append[url]
+        urls.append((url, site_class))
 
     # When URLs are ready, scrape data
+    all_data = []
+    for url, site_class in urls:
+        periods, ordinates = scraper.scrape_data(url)
+        if periods and ordinates:
+            all_data.append({
+                'Site Class': site_class,
+                'Periods': periods,
+                'Ordinates': ordinates})
 
-    # populate dataframes
+    # Convert all to a dataframe.
+    my_df = pd.DataFrame(all_data)
 
-    # When spectra dfs are made, plot the retrieved spectra
-
-    # MAIN AREA: display spectra plot.
-    # create dummy df for development
-    my_df=pd.DataFrame(
-        [[1,3], [2,2], [3,1]],
-        columns=['X', 'Y'])
-
-    # dummy figure for development
+    # Plot the retrieved spectra.
     fig = go.Figure()
-    fig.add_trace(
-        go.Scatter(
-            x=my_df['X'],
-            y=my_df['Y']
+    for data in all_data:
+        fig.add_trace(
+            go.Scatter(
+                x=data['Periods'],
+                y=data['Ordinates'],
+                name=f"Site Class {data['Site Class']}"
             )
-    )
-    st.plotly_chart(fig)
+        )
+
+# MAIN AREA: display spectra plot.
+st.plotly_chart(fig)
 
 # MAIN AREA: display datarame of spectral ordinates.
 st.write('The dataframe contains the spectral ordinates of the plotted data')
 st.dataframe(my_df)
 
 # MAIN AREA: write out URLs and data source.
-st.write('The data was gathered from the USGS website using these URLs:', urls)
+url_list = [url for url, _ in urls]
+url_string = "\n".join(url_list)
+st.write('The data was gathered from the USGS website using these URLs:', url_string)
 
