@@ -144,14 +144,18 @@ if user_input:
         hovermode='x unified'
     )
 
-# MAIN AREA: display spectra plot.
-st.plotly_chart(fig)
+    # MAIN AREA: display spectra plot.
+    st.plotly_chart(fig)
 
-# MAIN AREA: display datarame of spectral ordinates.
-st.write('The dataframe contains the spectral ordinates of the plotted data')
-st.dataframe(my_df)
+    # MAIN AREA: display datarame of spectral ordinates.
+    st.write('The dataframe contains the spectral ordinates of the plotted data')
+    st.dataframe(my_df)
 
-# MAIN AREA: write out URLs and data source.
-url_list = [url for url, _ in urls]
-url_string = "\n".join(url_list)
-st.write('The data was gathered from the USGS website using these URLs:', url_string)
+    # MAIN AREA: write out URLs and data source.
+    url_list = [url for url, _ in urls]
+    url_string = "\n".join(url_list)
+    st.write('The data was gathered from the USGS website using these URLs:', url_string)
+
+# Add a welcome message.
+if not user_input:
+    st.write('Please submit required data in sidebar to the left.')
