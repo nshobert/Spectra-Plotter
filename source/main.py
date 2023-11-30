@@ -10,10 +10,12 @@ import functions
 
 # Title for app.
 st.header('ASCE 7-22 Response Spectra Plotter')
-st.write('an application to plot multiple response spectra')
 
 # User input location, confirm on map
 with st.sidebar:
+    # SIDEBAR: Tell user to start here.
+    st.header('Start by Entering Options Here')
+
     # SIDEBAR: latitude and longitude inputs.
     lat = st.text_input('Enter latitude', value=47.56)
     lon = st.text_input('Enter longitude', value=-122.01)
@@ -141,6 +143,7 @@ if user_input:
         )
     
     fig.update_layout(
+        title=f'Multiperiod Response Spectra for {title}',
         hovermode='x unified'
     )
 
