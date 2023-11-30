@@ -159,6 +159,15 @@ if user_input:
     url_string = "\n".join(url_list)
     st.write('The data was gathered from the USGS website using these URLs:', url_string)
 
+    # MAIN AREA: show a disclaimer.
+    st.write('This tool was developed to aid exploratory analysis of projects.' +
+             'It is subject to revision. Though developed thoughtfully, ' +
+             'neither the functionality of the software nor the reliablity of ' + 
+             'the data are guaranteed. No warranty, expressed or implied, is ' +
+             'made by the author. Users are urged to vet the data and ' +
+             'information here against a unique source before relying on it ' +
+             'for decision making.')
+
 # Add a welcome message.
 if not user_input:
     st.write('Please submit required data in sidebar to the left.')
