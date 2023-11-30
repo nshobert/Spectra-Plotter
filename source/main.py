@@ -86,8 +86,16 @@ if user_input:
                 'Periods': periods,
                 'Ordinates': ordinates})
 
-    # Convert all to a dataframe.
-    my_df = pd.DataFrame(all_data)
+    # Make a human-reader friendly dataframe.
+    # Get periods from first site class since same for all.
+    periods = all_data[0]['Periods'] if all_data else []
+    my_df = pd.DataFrame({'Periods': periods})
+
+    # Add columns for each site class.
+    for data in all_data:
+        site_class = data['Site Class']
+        ordinates = data['Ordinates']
+        my_df[site_class] = ordinates
 
     # Plot the retrieved spectra.
     fig = go.Figure()
@@ -108,7 +116,7 @@ if user_input:
         # Get max spectral acceleration at each period.
         max_ords = [max(data['Ordinates'][i] for data in all_data) for i in range(len(periods))]
         
-        # Add the composite spectrum.
+        # Add the composite spectrum to the plot.
         fig.add_trace(
             go.Scatter(
                 x=periods,
@@ -118,16 +126,24 @@ if user_input:
             )
         )
 
-        # Set x axis to log and add labels.
-        fig.update_xaxes(
-                type='log',
-                title='Period (s)'
-            )
-        
-        fig.update_yaxes(
-                title='Spectral Acceleration (g)'
-            )
-            
+        # Add the composite spectrum to the dataframe.
+        my_df['Composite'] = max_ords
+
+
+    # Set x axis to log and add labels.
+    fig.update_xaxes(
+            type='log',
+            title='Period (s)'
+        )
+    
+    fig.update_yaxes(
+            title='Spectral Acceleration (g)'
+        )
+    
+    fig.update_layout(
+        hovermode='x unified'
+    )
+
 # MAIN AREA: display spectra plot.
 st.plotly_chart(fig)
 
@@ -139,4 +155,3 @@ st.dataframe(my_df)
 url_list = [url for url, _ in urls]
 url_string = "\n".join(url_list)
 st.write('The data was gathered from the USGS website using these URLs:', url_string)
-
