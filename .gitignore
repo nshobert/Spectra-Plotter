@@ -12,7 +12,7 @@ __pycache__/
 data_intermediate/
 
 # app password
-source/secrets.toml
+.streamlit/secrets.toml
 
 # random files
 blog.md
